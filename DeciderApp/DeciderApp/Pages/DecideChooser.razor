@@ -1,0 +1,18 @@
+﻿@page "/decidechooser"
+@using DeciderApp.Classes
+
+<h3>DecideChooser</h3>
+
+<ul>
+    @foreach (var todo in todos)
+    {
+        <li>@todo.Title @todo.Rating</li>
+    }
+</ul>
+
+<input placeholder="Something to decide" />
+<button>Add decide</button>
+
+@code {
+    private List<Decision> todos = new() {new Decision(){Title = "Test1", Rating = 9}};
+}
