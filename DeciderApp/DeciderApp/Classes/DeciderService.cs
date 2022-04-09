@@ -5,6 +5,8 @@
         private List<Decision> _allDecisions;
         private List<DecisionPair> _currentPairs;
         private bool _loaded;
+        private int _fileCounter;
+        private string _fileName;
 
         public DecisionPair ActualPair { get; set; }
 
@@ -12,7 +14,8 @@
         {
             if (_loaded == false)
             {
-                var lines = File.ReadAllLines(filename);
+                _fileName = filename;
+                var lines = File.ReadAllLines(_fileName);
                 _allDecisions = new List<Decision>();
                 foreach (var line in lines)
                 {
@@ -57,7 +60,10 @@
         public DecisionPair? GetNextActualPair()
         {
             if (_currentPairs.All(x => x.Checked))
+            {
                 _currentPairs = GetHighestPairs(_allDecisions);
+                File.WriteAllLines($"{_fileName}.{_fileCounter}.txt", ToTextLines());
+            }
             ActualPair = _currentPairs.First(x => x.Checked == false);
             return ActualPair;
         }

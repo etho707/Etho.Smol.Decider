@@ -27,6 +27,7 @@
 <ul>
     <li><button @onclick="Decide1">@_decide1</button></li>
     <li><button @onclick="Decide2">@_decide2</button></li>
+    <li><button @onclick="DecideBoth">Both</button></li>
 </ul>
 
 <h2>Results:</h2>
@@ -73,6 +74,14 @@
 
     private void Decide2()
     {
+        DecService.ActualPair.Decision2.Score++;
+        DecService.ActualPair.Checked = true;
+        Update();
+    }
+
+    private void DecideBoth()
+    {
+        DecService.ActualPair.Decision1.Score++;
         DecService.ActualPair.Decision2.Score++;
         DecService.ActualPair.Checked = true;
         Update();
