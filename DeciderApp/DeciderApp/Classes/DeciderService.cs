@@ -9,6 +9,8 @@
         private string _fileName;
 
         public DecisionPair ActualPair { get; set; }
+        public int ActualScoreLevel { get; set; } = 0;
+        public int TotalPairs { get; set; } = 0;
 
         public void Load(string filename)
         {
@@ -23,6 +25,13 @@
                 }
                 //_allDecisions = EvenDecisions(_allDecisions);
                 _currentPairs = GetHighestPairs(_allDecisions);
+                var pairNum = 0;
+                foreach (var pair in _currentPairs)
+                {
+                    pairNum++;
+                    pair.PairNum = pairNum;
+                }
+                TotalPairs = _currentPairs.Count;
                 ActualPair = _currentPairs.First(x => x.Checked == false);
                 _loaded = true;
             }
@@ -62,9 +71,18 @@
             if (_currentPairs.All(x => x.Checked))
             {
                 _currentPairs = GetHighestPairs(_allDecisions);
+                var pairNum = 0;
+                foreach (var pair in _currentPairs)
+                {
+                    pairNum++;
+                    pair.PairNum = pairNum;
+                }
+                TotalPairs = _currentPairs.Count;
+                ActualPair = _currentPairs.First(x => x.Checked == false);
                 File.WriteAllLines($"{_fileName}.{_fileCounter}.txt", ToTextLines());
             }
-            ActualPair = _currentPairs.First(x => x.Checked == false);
+            else
+                ActualPair = _currentPairs.First(x => x.Checked == false);
             return ActualPair;
         }
 
@@ -82,6 +100,13 @@
             }
             //_allDecisions = EvenDecisions(_allDecisions);
             _currentPairs = GetHighestPairs(_allDecisions);
+            var pairNum = 0;
+            foreach (var pair in _currentPairs)
+            {
+                pairNum++;
+                pair.PairNum = pairNum;
+            }
+            TotalPairs = _currentPairs.Count;
             ActualPair = _currentPairs.First(x => x.Checked == false);
             _loaded = true;
         }

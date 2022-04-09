@@ -5,5 +5,6 @@
         public Decision? Decision1 { get; set; }
         public Decision? Decision2 { get; set; }
         public bool Checked { get; set; } = false;
+        public int PairNum { get; internal set; }
     }
 }
