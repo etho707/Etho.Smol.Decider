@@ -67,5 +67,23 @@
             ActualPair = _currentPairs.First(x => x.Checked == false);
             return ActualPair;
         }
+
+        public void LoadSave(string fileName)
+        {
+            _fileName = fileName;
+
+            var lines = File.ReadAllLines(_fileName);
+            _allDecisions = new List<Decision>();
+            foreach (var line in lines)
+            {
+                var score = line[0] - '0';
+                var newLine = line.Substring(4);
+                _allDecisions.Add(new Decision() { Title = newLine, Score = score });
+            }
+            //_allDecisions = EvenDecisions(_allDecisions);
+            _currentPairs = GetHighestPairs(_allDecisions);
+            ActualPair = _currentPairs.First(x => x.Checked == false);
+            _loaded = true;
+        }
     }
 }

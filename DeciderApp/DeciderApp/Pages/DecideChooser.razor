@@ -32,7 +32,8 @@
 
 <h2>Results:</h2>
 
-<button @onclick="Update">Update</button>
+<button @onclick="Update">Update</button> <br />
+<button @onclick="LoadSave">Load Save</button> <br />
 
 <ul>
     @foreach (var todo in DecService.ToTextLines())
@@ -92,5 +93,11 @@
         DecService.GetNextActualPair();
         _decide1 = DecService.ActualPair.Decision1.Title;
         _decide2 = DecService.ActualPair.Decision2.Title;
+    }
+
+    private void LoadSave()
+    {
+        DecService.LoadSave(@"C:\temp\dec_save.txt");
+        Update();
     }
 }
