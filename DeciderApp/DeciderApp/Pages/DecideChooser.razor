@@ -1,18 +1,87 @@
 ﻿@page "/decidechooser"
 @using DeciderApp.Classes
+@inject DeciderService DecService
 
 <h3>DecideChooser</h3>
 
 <ul>
-    @foreach (var todo in todos)
+    @foreach (var todo in decisions)
     {
-        <li>@todo.Title @todo.Rating</li>
+        <li>@todo.Title @todo.Score</li>
     }
 </ul>
 
-<input placeholder="Something to decide" />
-<button>Add decide</button>
+<input placeholder="Something todo" @bind="newDecide" />
+<button @onclick="AddDecide">Add decide</button>
+<ul>
+    @foreach (var todo in decisions)
+    {
+        <li>
+            <input type="checkbox" @bind="check" />
+            <input @bind="todo.Title" />
+        </li>
+    }
+</ul>
+<button @onclick="Load">Load And Start</button>
+
+<ul>
+    <li><button @onclick="Decide1">@_decide1</button></li>
+    <li><button @onclick="Decide2">@_decide2</button></li>
+</ul>
+
+<h2>Results:</h2>
+
+<button @onclick="Update">Update</button>
+
+<ul>
+    @foreach (var todo in DecService.ToTextLines())
+    {
+        <li>@todo</li>
+    }
+</ul>
 
 @code {
-    private List<Decision> todos = new() {new Decision(){Title = "Test1", Rating = 9}};
+    private List<Decision> decisions = new() {new Decision(){Title = "Test1", Score = 9}};
+    private string? newDecide;
+    private bool check = true;
+
+    private string _decide1 = "x";
+    private string _decide2 = "y";
+
+    protected override async Task OnInitializedAsync()
+    {
+        DecService.Load(@"C:\temp\dec_input.txt");
+        //forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
+
+    private void AddDecide()
+    {
+        // Todo: Add the todo
+    }
+
+    private void Load()
+    {
+
+    }
+
+    private void Decide1()
+    {
+        DecService.ActualPair.Decision1.Score++;
+        DecService.ActualPair.Checked = true;
+        Update();
+    }
+
+    private void Decide2()
+    {
+        DecService.ActualPair.Decision2.Score++;
+        DecService.ActualPair.Checked = true;
+        Update();
+    }
+
+    private void Update()
+    {
+        DecService.GetNextActualPair();
+        _decide1 = DecService.ActualPair.Decision1.Title;
+        _decide2 = DecService.ActualPair.Decision2.Title;
+    }
 }

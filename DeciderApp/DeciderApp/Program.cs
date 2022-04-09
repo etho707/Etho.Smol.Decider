@@ -10,7 +10,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
-builder.Services.AddSingleton<DeciderService>();
+var deciderService = new DeciderService();
+builder.Services.AddSingleton<DeciderService>(deciderService);
 
 var app = builder.Build();
 
